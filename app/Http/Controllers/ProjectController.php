@@ -5,15 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Http\Requests\ProjectRequest;
+use App\Service\ProjectService;
 
 class ProjectController extends Controller
 {
+    public function __construct(
+        public ProjectService $service
+    )
+    {
+        //
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $projects = Project::with('created_by')->get();
+        $projects = Project::with('creator')->get();
         return view('projects.index', compact('projects'));
     }
 
@@ -30,16 +37,15 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request)
     {
-        $name = $request->input('name');
-        $description = $request->input('description');
+        $data = $request->validated();
+        $data['created_by'] = auth()->user()->id;
 
-        $project = new Project();
-        $project->name = $name;
-        $project->description = $description;
-        $project->created_by = auth()->user()->id;
-        $project->save();
+        $project = $this->service->createProject(
+            data: $data,
+            user: auth()->user()
+        );
 
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        return redirect()->route('projects.index')->with('success', "Project {$project->name} created successfully.");
     }
 
     /**
