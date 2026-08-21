@@ -13,10 +13,24 @@
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @foreach ($projects as $project)
-                        <div class="mb-4">
+                        <div class="">
                             <h3 class="text-lg font-semibold">{{ $project->name }}</h3>
                             <p class="text-gray-600 dark:text-gray-400">{{ $project->description }}</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Created by: {{ $project->creator->name }}</p>
+                            <div class="flex space-x-5">
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Created by: {{ $project->creator->name }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Tasks: {{ $project->tasks()->count() }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Members: {{ $project->users->count() }}</p>
+                            </div>
+                            <div class="border my-2"></div>
+                            <div class="flex space-x-5 mt-2">
+                                <a href="{{ route('projects.show', $project->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">View</a>
+                                <a href="{{ route('projects.edit', $project->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Edit</a>
+                                <form action="{{ route('projects.destroy', $project->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                                </form>
+                            </div>
                         </div>
                     @endforeach
                 </div>

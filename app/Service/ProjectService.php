@@ -9,14 +9,21 @@ class ProjectService
 {
     public function getAllProjects()
     {
-        return Project::with('created_by')->get(); 
+        return Project::with('creator')->get(); 
     }
 
     public function createProject(array $data, User $user): Project
     {
         $project = $user->projects()->create($data);
 
-        $project->users()->attach($user->id, ['role' => 'owner']);
+        $project->users()->sync($user->id, ['role' => 'owner']);
+
+        return $project;
+    }
+
+    public function updateProject(Project $project, array $data): Project
+    {
+        $project->update($data);
 
         return $project;
     }

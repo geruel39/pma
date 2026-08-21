@@ -14,6 +14,8 @@ class Project extends Model
         'description',
         'status',
         'created_by',
+        'created_at',
+        'updated_at'
     ];
 
     public function creator(): BelongsTo
