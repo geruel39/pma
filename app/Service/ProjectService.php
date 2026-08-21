@@ -16,7 +16,7 @@ class ProjectService
     {
         $project = $user->projects()->create($data);
 
-        $project->users()->sync($user->id, ['role' => 'owner']);
+        $project->users()->sync([$user->id, ['role' => 'owner']]);
 
         return $project;
     }

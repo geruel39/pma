@@ -23,7 +23,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="mb-4">
                         <h3 class="text-lg font-semibold">{{ $project->name }}</h3>
-                        <p class="text-gray-600 dark:text-gray-400">{{ $project->description }}</p>
+                        <p class="text-gray-600  dark:text-gray-400 whitespace-pre-line">{{ $project->description }}</p>    
                     </div>
                 </div>
             </div>
